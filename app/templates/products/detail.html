@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static bootstrap_icons %}
+{% block title %}
+  {{ product.name }}
+{% endblock %}
+{% block content %}
+<div style="margin-top:120px;" class="p_detail">
+ <img class="float-start pb-3 pe-2" src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" alt="image" />
+ <h3 class="mb-0">{{ product.name}}</h3>
+ <h4 class="mt-2">
+   <a style="color:#2c83be;" href="{{ product.category.get_absolute_url }}">{{ product.category }}</a>
+ </h4>
+<p style="color:#333; "class="mb-0 mt-2 fs-5 fw-bold">${{ product.price }}</p>
+<div style="margin-top:-10px; " class="pb-2 ps-2">
+  <img style=" width:10px; height:10px;" src="{% static 'img/star.png' %}" alt="" />
+  <img style=" width:10px; height:10px;" src="{% static 'img/star.png' %}" alt="" />
+  <img style=" width:10px; height:10px;" src="{% static 'img/star.png' %}" alt="" />
+  <img style=" width:10px; height:10px;" src="{% static 'img/star.png' %}" alt="" />
+  <img style=" width:10px; height:10px;" src="{% static 'img/star.png' %}" alt="" />
+</div>
+ <form action="{% url 'cart:cart_add' product.id %}" method="POST" >
+   {% csrf_token %}
+   {{ cart_product_form.as_p }}
+   <a href="#" class="add_to_cart text-decoration-none"><button style="background:#ff933b; font-size:19px; border-radius:12px;" class="addcart border-0 text-center ms-2 fw-bold mt-3  py-2 px-2 text-white" type="submit"><span class="ps-1 float-start">{% bs_icon 'cart-plus' size='1.2em' %}</span>ADD TO CART</button></a>
+ </form>
+ <div class="mt-5 w-100">{{ product.description|linebreaks }}</div>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html'%}
+{% load static bootstrap_icons %}
+{% block title %}
+  Products
+{% endblock %}
+{% block content %}
+    <div class="Content2">
+      <p style="color:#666; font-size:14px; height:10px;" class="px-2">RESULTS FROM SEARCH</p>
+      {% if search_post %}
+      {% for p in search_query %}
+      <div style="background:#fff; height:auto;" class="item float-start mx-2 mb-3">
+      <a href="{{ p.get_absolute_url }}">
+        <img class="d-block mw-100 h-auto mx-0 mt-0 mb-1" src="{% if p.image %}{{ p.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" alt="image" />
+      </a>
+      <a style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap; font-size:14px; "class="d-block mt-4 px-2 pt-2 pb-1 fw-bold mb-4" href="{{ p.get_absolute_url }}">{{ p.name }}</a>
+      <p class="px-2 mb-0" style="font-size:18px;">${{ p.price }}</p>
+      <div style="margin-top:-10px; " class="ps-2 mb-3">
+        <img style=" width:15px; height:15px;" src="{% static 'img/star.png' %}" alt="" />
+        <img style=" width:15px; height:15px;" src="{% static 'img/star.png' %}" alt="" />
+        <img style=" width:15px; height:15px;" src="{% static 'img/star.png' %}" alt="" />
+        <img style=" width:15px; height:15px;" src="{% static 'img/star.png' %}" alt="" />
+        <img style=" width:15px; height:15px;" src="{% static 'img/star.png' %}" alt="" />
+      </div>
+    </div>
+      {% endfor %}
+      {% else %}
+      {% endif %}
+    </div>
+{% endblock %}

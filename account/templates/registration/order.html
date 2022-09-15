@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags%}
+{% block title %}
+  SIGN-UP
+{% endblock %}
+{% block content %}
+  <h2 style="margin-top:120px;" class="pb-2 mb-3 ps-2 text-center fw-bold" style="color:#333">ADDRESS</h2>
+  <form method="POST" class="form">
+    {% csrf_token %}
+    {{ order_form|crispy }}
+    <p class="text-center"><input class="border-0" style="font-weight:bold; background:#ff933b; color:#fff; font-size:14px; padding:10px 20px; text-transform:uppercase; border-radius:8px;" type="submit" value="SAVE CHANGES"/></p>
+  </form>
+{% endblock %}

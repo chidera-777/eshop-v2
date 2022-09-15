@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+  SIGN-UP
+{% endblock %}
+{% block content %}
+  <h1 style="margin-top:110px;" class="pb-2 mb-3 text-center fw-bold" style="color:#333">Sign-Up</h1>
+  <p class="text-center" style="color:#888;">Please fill the form below</p>
+  <form method="post" class="form">
+    {% csrf_token %}
+    {{ user_form|crispy }}
+    <p class="text-center"><input class="border-0" style="font-weight:bold; background:#ff933b; color:#fff; font-size:14px; padding:10px 20px; text-transform:uppercase; border-radius:8px;" type="submit" value="CREATE ACCOUNT"/></p>
+    <p class="text-center">Already have an account! <a style="color:#ff933b" href="{% url 'login' %}">LOGIN</a></p>
+  </form>
+{% endblock %}
