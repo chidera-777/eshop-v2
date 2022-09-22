@@ -3,7 +3,7 @@
 {% block title %}Cart{% endblock %}
 {% block content %}
 {% if cart %}
-  <div class="total_sm">
+  <div class="total_sm mt-1">
     <p style="color:#666; font-size:14px; height:10px;" class="px-2">SUMMARY</p>
     <div style="background:white; font-size:20px;" class="px-3 py-2 fw-bold">
       Total Price <span class="float-end">${{ cart.get_total_price }}</span>
@@ -37,17 +37,17 @@
     {% endfor %}
   </div>
   <div class="d-md-none checkout">
-    <a class="text-decoration-none"href="{% url 'orders:order_create' %}"><button style="background:#ff933b; font-size:17px; color:#fff; border-radius:7px;" class="w-100 border-0 py-2 px-3 fw-bold my-2" type="submit">CHECKOUT (${{ cart.get_total_price }})</button></a>
+    <a class="text-decoration-none"href="{% url 'orders:order_payout' %}"><button style="background:#ff933b; font-size:17px; color:#fff; border-radius:7px;" class="w-100 border-0 py-2 px-3 fw-bold my-2" type="submit">CHECKOUT (${{ cart.get_total_price }})</button></a>
   </div>
-  <div class="total">
+  <div class="total mt-1">
     <p style="background:#fff; color:#333; font-size:14px;" class="ps-2 py-2 mb-1">CART SUMMARY</p>
     <div style="background:white; font-size:20px;" class="px-3 py-2 fw-bold">
       Total Price <span class="float-end">${{ cart.get_total_price }}</span>
-      <a class="text-decoration-none" href="{% url 'orders:order_create' %}"><button style="background:#ff933b; font-size:17px; color:#fff; border-radius:7px;" class="w-100 border-0 py-2 px-3 fw-bold mt-5 mb-3" type="submit">CHECKOUT (${{ cart.get_total_price }})</button></a>
+      <a class="text-decoration-none" href="{% url 'orders:order_payout' %}"><button style="background:#ff933b; font-size:17px; color:#fff; border-radius:7px;" class="w-100 border-0 py-2 px-3 fw-bold mt-5 mb-3" type="submit">CHECKOUT (${{ cart.get_total_price }})</button></a>
     </div>
   </div>
   {% else %}
-  <img class="cart_img mt-4 mb-2 mx-auto d-block" src="{% static 'img/empty_cart.png' %}" alt="" />
+  <img class="cart_img mb-2 mx-auto d-block" src="{% static 'img/empty_cart.png' %}" alt="" />
   <p style="font-size:18px;" class="fw-bold text-center">Your cart is empty!</p>
     <p class=" text-center">Click button below to start shopping</p>
     <div class="text-center"><a class="text-decoration-none" href="{% url 'app:product_list' %}">

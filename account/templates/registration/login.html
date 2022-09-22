@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Log-In{% endblock %}
 {% block content %}
-<h1 style="margin-top:120px;" class="pb-2 mb-3 text-center fw-bold" style="color:#333">Log-In</h1>
+<h1 class="mt-1 pb-2 mb-3 text-center fw-bold" style="color:#333">Log-In</h1>
   <p class="text-center" style="color:#888;">Please Enter your login details</p>
 <form method="POST" action="{% url 'login' %}" class="form" autocomplete="off">
   {% csrf_token %}

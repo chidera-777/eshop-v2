@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth import get_user_model
+from phonenumber_field.widgets import PhoneNumberPrefixWidget
 from .models import Customer
 
 User = get_user_model()
@@ -16,7 +17,7 @@ class CustomUserCreationForm(UserCreationForm):
         required =('first_name', 'last_name')
         
      ## Check if passwords match ##   
-    def clean_password2(self):
+    def clean_password(self):
       cd = self.cleaned_data
       if cd['password2'] != cd['password1']:
         raise forms.ValidationError('Passwords don\'t match')
@@ -35,6 +36,11 @@ class CustomUserChangeForm(UserChangeForm):
         fields = ['email', 'first_name', 'last_name']
       
 class CustomerOrderForm(forms.ModelForm):
+  
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['phone_number'].help_text = 'Input your country code then your number. e.g \'+234****\''
     class Meta:
         model = Customer
-        fields = ['address', 'postal_code', 'country', 'state', 'city']
+        fields = ['address', 'postal_code', 'country', 'state', 'phone_number', 'city']
+        

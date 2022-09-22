@@ -31,7 +31,6 @@
         justify-content: center;
         grid-template:auto auto/20% 70%;
         gap: 30px;
-        margin-top: 120px;
       }
       .sidebar ul{
         list-style-type: none;
@@ -71,13 +70,11 @@
       .cart_list{
         float:left;
         width: 60%;
-        margin-top: 100px;
       }
       .total{
         float: left;
         width: 36%;
         margin-left: 20px;
-        margin-top: 100px;
       }
      
       ul.messages {
@@ -125,26 +122,10 @@
           clear:both;
           display:table;
           }
-          .sbar{
-            margin-top: 120px;
-            float: left;
-            width: 25%;
-          }
-          .sbar ul{
-          list-style-type: none;
-        }
-        .sbar ul li.selected{
-          background: #ff933b;
-          border-radius: 4px;
-        }
-        .sbar ul li.selected a{
-          color: white;
-        }
         .Content2{
           float: left;
           width: 70%;
         }
-
       @media only screen and (min-width:768px){
         .menu{
           padding: 10px 10px 5px 15px;
@@ -177,6 +158,9 @@
           .form{
             margin: 0 250px;
           }
+          th, td{
+            padding-right: 15px;
+          }
       }
       @media only screen and (max-width:767px){
         .menu span, .span, .dropdown{
@@ -184,7 +168,6 @@
         }
         .cont{
         grid-template:auto auto/100%;
-        margin-top: 100px;
       }
         .sidebar{
           display: none;
@@ -206,11 +189,11 @@
         .total{
           display: none;
         }
-        .total_sm{
-          margin-top: 100px;
+        td > h4, th > h4{
+          font-size: 16px;
         }
-        .sbar{ 
-          display:none;
+        td > h5{
+          font-size: 15px;
         }
       }
       @media only screen and (min-width:1024px){
@@ -225,7 +208,6 @@
       <a class="text-decoration-none text-dark fs-1 fw-bolder" href="{% url 'app:product_list' %}">Eshop</a>
       <div class="d-inline-block px-2 pt-2 float-end">
         <form action="{% url 'app:search_list' %}" method="GET" class="d-inline">
-          {% csrf_token %}
           <a id="searched" class="text-decoration-none text-dark" href="#"><span class="menu ">{% bs_icon 'search' size='1.2em' %}</span></a><span class="span fw-bold"><input type="search" value="{{ search_post }}"  class="p-2 me-2" name="q" id="search" placeholder="Search products and categories"/><button style="background:#ff933b; border:none;" class="p-2" type="submit">{% bs_icon 'search' size='1.2em' color='white' %}</button></span>
          </form>
          <a class="text-decoration-none text-dark" href="#"><span class="menu">{% if request.user.is_authenticated %}{% bs_icon 'person-check' size='1.4em' %}<span class="pe-3 dropdown"><button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown">Hi, {{ request.user.first_name }}!</button><ul class="dropdown-menu">
@@ -240,7 +222,7 @@
          <a class="text-decoration-none text-dark" href="{% url 'cart:cart_detail' %}"><span class="ps-4 menu">{% bs_icon 'cart' size='1.4em' %}<p style="font-size:8px; margin-top:-10px; margin-left:-10px;" class="bg-dark rounded-circle text-white d-inline px-2 py-1">{{ cart|length }}</p><span class="ms-2 fw-bold">Cart</span></span></a>
       </div>
     </div>
-    <div class="container-fluid overflow-hidden">
+    <div style="padding-top:100px;" class="container-fluid overflow-hidden">
       {% if messages %}
         <ul class="messages">
           {% for message in messages %}

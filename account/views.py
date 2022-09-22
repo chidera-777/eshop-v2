@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.conf import settings
 from django.core.mail import send_mail
@@ -20,7 +21,10 @@ def register(request):
             body = f"Dear {cd['first_name']}, \n\n" \
                    f"Thank you for registering with Eshop. \n" \
                    f"We welcome you to enjoy your freedom to shop anywhere, anytime! Sit back and relax while we strive to turn your everyday shopping experience into an extraordinary one."
-            send_mail(subject, body, settings.EMAIL_HOST_USER, [cd['email']], fail_silently=False)
+            try:
+                send_mail(subject, body, settings.EMAIL_HOST_USER, [cd['email']], fail_silently=False)
+            except BadHeaderError:
+                return HttpResponse('Invalid header found.')
             new_user = authenticate(request, email=cd['email'], password=cd['password1'])
             login(request, new_user)
             return redirect('order_register')
@@ -36,7 +40,7 @@ def order_register(request):
             user_order.user=request.user
             user_order.save()
             messages.success(request, 'Info updated Successfully!')
-            return redirect('orders:order_create')
+            return redirect('orders:order_payout')
     return render(request, 'registration/order.html', {'order_form': order_form})
     
 def login_view(request):
@@ -74,4 +78,4 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     messages.success(request, 'You have been logged out Successfully')
-    return redirect('account:login')
+    return redirect('login')

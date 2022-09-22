@@ -4,7 +4,7 @@
   SIGN-UP
 {% endblock %}
 {% block content %}
-  <h2 style="margin-top:120px;" class="pb-2 mb-3 ps-2 text-center fw-bold" style="color:#333">ADDRESS</h2>
+  <h2 class="mt-1 pb-2 mb-3 ps-2 text-center fw-bold" style="color:#333">ADDRESS</h2>
   <form method="POST" class="form">
     {% csrf_token %}
     {{ order_form|crispy }}

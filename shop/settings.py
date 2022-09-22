@@ -10,15 +10,19 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+import os
+import dj_database_url
 from pathlib import Path
+from dotenv import load_dotenv
 import environ
 
 env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 
-environ.Env.read_env()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -50,10 +54,13 @@ INSTALLED_APPS = [
     'orders.apps.OrdersConfig',
     'account.apps.AccountConfig',
     'users.apps.UsersConfig',
+    'payment.apps.PaymentConfig',
       ## Other libraries ##
     'django_bootstrap_icons',
     'crispy_forms',
     'crispy_bootstrap5',
+    'django_countries',
+    'phonenumber_field',
 ]
 
 JET_DEFAULT_THEME = 'light-gray'
@@ -134,12 +141,21 @@ WSGI_APPLICATION = 'shop.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+DATABASE_URL = os.getenv('DATABASE_URL')
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-	}
+}
+       # 'ENGINE': 'django.db.backends.mysql',
+       # 'NAME': 'railway',
+       # 'USER': env('USER'), # "root", 
+    #    'PASSWORD': env('PASSWORD'), #'PGzV4FI5wGM9kfmp2ADE',  
+  #      'HOST': env('HOST'),
+       # 'PORT': '7523'
+   # }
 
 
 # Password validation
@@ -158,6 +174,10 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
+]
+
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.MD5PasswordHasher',
 ]
 
 
@@ -190,6 +210,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = env('EMAIL_HOST')
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = 'cppsppzikpgugmme' #env('EMAIL_HOST_PASS')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASS')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+# Braintree settings
+BRAINTREE_MERCHANT_ID = env('MERCHANT_ID')
+BRAINTREE_PUBLIC_KEY = env('PUBLIC_KEY')
+BRAINTREE_PRIVATE_KEY = env('PRIVATE_KEY')
+
+import braintree
+
+# Change to Environment.Production when in production with a new id and keys
+BRAINTREE_CONF = braintree.Configuration(braintree.Environment.Sandbox, BRAINTREE_MERCHANT_ID, BRAINTREE_PUBLIC_KEY, BRAINTREE_PRIVATE_KEY)

@@ -1,11 +1,16 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import OrderItem
-from .forms import OrderCreateForm
 from cart.cart import Cart
+from account.models import Customer
 
 # Create your views here.
-@login_required(redirect_field_name='next', login_url='login')
+@login_required(login_url='login')
+def order_payout(request):
+    cart = Cart(request)
+    customer = Customer.objects.all()
+    return render(request, 'orders/created.html', {'cart': cart, 'customer': customer})
+
+
 def order_create(request):
     cart = Cart(request)
     if request.method == 'POST':

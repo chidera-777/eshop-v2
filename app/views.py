@@ -19,6 +19,6 @@ def product_details(request, id, slug):
    return render(request, 'products/detail.html',  {'product': product, 'cart_product_form': cart_product_form})
 
 def search_list(request):
-    search_query = Product.objects.filter(Q(category__name__icontains=request.GET['q']) | Q(name__icontains=request.GET['q'])
-    )
-    return render(request, 'product/search.html', { 'search_query': search_query})
+    search_post = request.GET.get('q')
+    search_query = Product.objects.filter(Q(category__name__icontains=search_post) | Q(name__icontains=search_post))
+    return render(request, 'products/search.html', {'search_post':search_post, 'search_query': search_query})
