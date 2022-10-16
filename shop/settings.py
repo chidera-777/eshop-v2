@@ -34,7 +34,7 @@ SECRET_KEY = django-insecure-c$%8bb+=dsk$4^a6v15m296u7b9s0e7ebaqduvlj=(+y8f=uz4 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
