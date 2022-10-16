@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Checkout {% endblock %}
+{% block content %}
+  <div class="row">
+    <div class="col-md-5">
+      <div class="mt-2 mb-2 ms-2">
+        <p style="color:#666; font-size:14px; height:10px;" class="px-2 py-2">YOUR ADDRESS</p>
+        <div class="px-3 pb-2 pt-2" style="margin-bottom:10px; background: white; border-radius:9px;">
+          <p class="mb-1" style="font-size:16px;">{{ request.user.get_full_name }}</p>
+          <p class="mb-1" style="color:#888; font-size:14px;">{{ request.user.customer.address }}</p>
+          <p class="mb-1" style="color:#888; font-size:14px;">{{ request.user.customer.country }}</p>
+          <p class="mb-1" style="color:#888; font-size:14px;">{{ request.user.customer.state }} - {{request.user.customer.city}}</p>
+          <p class="mb-1" style="color:#888; font-size:14px;">{{request.user.customer.phone_number}}</p>
+        </div>
+        <p class="text-end"><a style="color:#ff933b" href="{% url 'order_register' %}">Change Address</a></p>
+      </div>
+    </div>
+   {% if cart %}
+      <div class="col-md-7">
+        <div style="background: white; padding:10px; border-radius:9px;" class="mt-sm-3 mt-md-5 mb-5 me-2">
+            <h3 class="mb-4">Summary</h3>
+            {% if cart.coupon %}
+              <div class="mb-4"><table class="w-100" >
+                <tr>
+                  <td class="px-2">Subtotal</td>
+                  <td colspan="4"></td>
+                  <td>${{ cart.get_total_price }}</td>
+                </tr>
+                <tr>
+                  <td class="px-2">"{{ cart.coupon.code }}" coupon({{ cart.coupon.discount }}% off)</td>
+                  <td colspan="4"></td>
+                  <td class="text-danger">-${{ cart.get_discount|floatformat:2 }}</td>
+                </tr>
+                <tr style="border-bottom:2px solid black">
+                  <td class="fw-bold fs-5 px-2">Total Price</td>
+                  <td colspan="4"></td>
+                  <td class="fw-bold fs-5 px-2">${{ cart.get_total_price_after_discount|floatformat:2 }}</td>
+                </tr>
+              </table></div>
+            {% else %}
+              <h4 style="border-bottom:2px solid black"class="mb-4 fw-bold">Total Price: ${{ cart.get_total_price }}</h4>
+            {% endif %}
+            <table style="border-collapse:collapse; color:#333;" class="text-center">
+              <thead>
+                <tr>
+                  <th scope="col"><h4>item</h4></th>
+                  <th scope="col"><h4>name</h4></th>
+                  <th scope="col"><h4>quantity</h4></th>
+                  <th scope="col"><h4>price</h4></th>
+                </tr>
+              </thead>
+              {% for item in cart %}
+              {% with product=item.product %}
+              <tbody>
+                <tr>
+                  <td><div style="width:60px; height:60px;"><img style="width:100%" src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" alt="image" /></div></td>
+                  <td><h5>{{ product.name|truncatewords:4  }}</h5></td>
+                  <td><h4>{{ item.quantity }}</h4></td>
+                  <td><h4>${{ item.total_price }}</h4></td>
+                </tr>
+              </tbody>
+            {% endwith %}
+          {% endfor %}
+            </table>
+            <div class="mt-4 mb-3 text-center">
+              <a style="background:#ff933b; color:white; border-radius:9px; width:100%;" class="fw-bold p-3 d-inline-block" href="{% url 'cart:cart_detail' %}">MODIFY CART</a>
+            </div>
+            <div id="paypal-button-container"></div>
+            <div class="text-center">
+              <div class="d-inline-block" style="width:40px; height:40px;">
+                <img class="w-100" src="{% static 'img/visa.webp' %}" alt="visa" />
+              </div>
+              <div class="d-inline-block" style="width:40px; height:40px;">
+                <img class="w-100" src="{% static 'img/master.webp' %}" alt="master" />
+              </div>
+              <div class="d-inline-block" style="width:40px; height:40px;">
+                <img class="w-100" src="{% static 'img/verve.webp' %}" alt="verve" />
+              </div>
+            </div>
+        </div>
+      </div>
+  {% endif %}
+  </div>
+  <script src="https://www.paypal.com/sdk/js?client-id=AcG3MZqqzajfdBMISdrJZA4_07RFscBUQLSvDfwJwh2uTC0c7FQgDT7c2BglHyq40fcdhxR5a-oMbMUA&currency=USD&disable-funding=credit"></script>
+  <script>
+      paypal.Buttons({
+        style: {
+          layout: 'vertical',
+          label: 'pay',
+          color: 'silver'
+        },
+
+        // Sets up the transaction when a payment button is clicked
+        createOrder: function(data, actions) {
+          return actions.order.create({
+            purchase_units: [{
+              amount: {
+                value: {% if cart.coupon %}{{cart.get_total_price_after_discount}}{% else %}{{ cart.get_total_price }}{% endif %}
+              },
+
+            }]
+          });
+        },
+        // Finalize the transaction after payer approval
+        onApprove: function(data, actions) {
+         
+          return actions.order.capture().then(function(orderData) {
+            // Successful capture! For dev/demo purposes:
+            console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+            var transaction = orderData.purchase_units[0].payments.captures[0];
+            alert(`Transaction ${transaction.status}: ${transaction.id}\n\nTransaction was Successful`);
+            window.location.href = "{% url 'confirm_order' %}";
+            // When ready to go live, remove the alert and show a success message within this page. For example:
+            // const element = document.getElementById('paypal-button-container');
+            // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+            // Or go to another URL:  actions.redirect('thank_you.html');
+          });
+        }
+      }).render('#paypal-button-container');
+    </script>
+{% endblock %}

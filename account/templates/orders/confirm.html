@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+  Confirm Payment
+{% endblock %}
+{% block content %}
+<div class="mx-md-5 px-md-5">
+  <h1 class="text-center my-3">Confirm Payment</h2>
+  <div class="px-3 pb-2 pt-2" style="margin-bottom:20px; background: white; border-radius:9px;">
+    
+  <h2 class="my-5">Billing address</h2>
+  <div class="fs-5 pb-2">
+    {{ request.user.get_full_name }}
+  </div>
+  <div style="color:#ccc" class="fs-5 pb-2">
+    {{ request.user.email }}
+  </div>
+  <div class="fs-5 pb-2">
+    {{ order.address }}
+  </div>
+  <div class="fs-5 pb-2">
+    {{ order.country }}
+  </div>
+  <div class="fs-5 pb-2">
+   {{ order.phone_number }} 
+  </div>
+  <div style="color:#ccc" class="fs-6 pb-2">
+    {{ date }}
+  </div>
+  </div>
+  <div class="px-3 pb-2 pt-2" style="margin-bottom:30px; background: white; border-radius:9px;">
+  {% if cart %}
+    <h2 class="my-5">Items bought</h2>
+    <table style="width:100%; border-collapse:collapse; color:#333;" class="text-center">
+        <thead>
+          <tr style="background:#111; color:#fff">
+            <th scope="col"><h4>name</h4></th>
+            <th scope="col"><h4>quantity</h4></th>
+            <th scope="col"><h4>price</h4></th>
+            <th scope="col"><h4>total</h4></th>
+          </tr>
+        </thead>
+        {% for item in cart %}
+          {% with product=item.product %}
+              <tbody>
+                  <tr style="background:#efefef; color:#000">
+                    <td><h5>{{ product.name|truncatewords:5 }}</h5></td>
+                    <td><h4>{{ item.quantity }}</h4></td>
+                    <td><h4>${{ item.price }}</h4></td>
+                    <td><h4>${{ item.total_price }}</h4></td>
+                  </tr>
+              </tbody>
+          {% endwith %}
+        {% endfor %}
+      </table>
+      <div style="background:#111; color:#fff" class="mb-3 ps-2 fs-5 fw-bold">
+        Total Price
+        <span class="pe-2 float-end">{% if cart.coupon %}${{cart.get_total_price_after_discount|floatformat:2 }}({{ cart.coupon.discount }}% off){% else %}${{ cart.get_total_price|floatformat:2 }}{% endif %}</span>
+      </div>
+  {% endif %}
+  </div>
+  <form class="mb-5" method="POST">
+    {% csrf_token %}
+    <div class="fs-5 ">{{ confirm_form|crispy }}</div>
+    <div class="text-center"><button style="background:#ff933b; color:#fff;" class="my-3 border-0 p-2 w-50 fw-bold" type="submit">Confirm Payment</button></div>
+  </form>
+</div>
+{% endblock %}

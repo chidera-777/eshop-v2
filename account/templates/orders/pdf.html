@@ -1,0 +1,59 @@
+<html>
+<body>
+  <h1 class="my-3">Eshop</h2>
+  <p>
+    Invoice no. {{ order.id }}<br />
+
+  </p>
+  <h2 class="my-5">Billing address</h2>
+  <div class="pb-2">
+    {{ order.user.first_name }} {{ order.user.last_name }}
+  </div>
+  <div style="color:#ccc" class="pb-2">
+    {{ order.user.email }}
+  </div>
+  <div class="pb-2">
+    {{ order.address }}
+  </div>
+  <div class="pb-2">
+    {{ order.country }}
+  </div>
+  <div class="pb-2">
+    {{ order.postal_code }}, {{ order.city }}
+  </div>
+  <div class="pb-2 mb-5">
+   {{ order.phone_number }} 
+  </div>
+
+    <h2 class="my-5">Items bought</h2>
+    <table style="width:100%; border-collapse:collapse; color:#333;" class="text-center">
+        <thead>
+          <tr style="background:#111; color:#fff">
+            <th scope="col"><h4>name</h4></th>
+            <th scope="col"><h4>price</h4></th>
+            <th scope="col"><h4>quantity</h4></th>
+            <th scope="col"><h4>cost</h4></th>
+          </tr>
+        </thead>
+              <tbody>
+                {% for item in order.items.all %}
+                  {% with product=item.product %}
+                  <tr style="background:#efefef; color:#000">
+                    <td><h5>{{ product.name|truncatewords:5 }}</h5></td>
+                    <td><h5>${{ item.price }}</h5></td>
+                    <td><h4>{{ item.quantity }}</h4></td>
+                    <td><h4>${{ item.get_cost }}</h4></td>
+                  </tr>
+                  {% endwith %}
+                {% endfor %}
+                  <tr style="background:#111; color:#fff">
+                    <td colspan="3"><h5>Total Price</h5></td>
+                    <td class="text-right fw-bolder fs-5">${{ order.get_total_cost }}</td>
+                  </tr>
+              </tbody>
+      </table>
+      <span class="{% if order.paid %}paid{% else %}pending{% endif %}">
+          {% if order.paid %}PAID{% else %} PENDING PAYMENT{% endif %}
+      </span>
+</body>
+</html>

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load bootstrap_icons %}
+{% block title %}
+  Profile
+{% endblock %}
+{% block content %}
+  <h2 class="my-4 text-center">Account Overview</h2>
+  <div class="row">
+    <div class="col-md-6">
+      <div style="background:#fff;" class="px-4 py-4 mx-3 mt-2 mb-4">
+        <h4 class="my-3 mb-0">Account details</h4><span class="text-end d-block"><a href="{% url 'user_edit' %}" style="color:#ff933b">{% bs_icon 'pencil-fill' %}</a></span>
+        <hr />
+        <p style="color:#777;" class="mb-1">{{ request.user.get_full_name }}</p>
+        <p style="color:#777;" class="mb-1">{{ request.user.email }}</p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      {% if customer_user %}
+      <div style="background:#fff;" class="px-4 py-4 mx-3 my-2">
+        <h4 class="my-3 mb-0">Address book</h4><span class="text-end d-block"><a href="{% url 'user_edit_address' %}" style="color:#ff933b">{% bs_icon 'pencil-fill' %}</a></span>
+        <hr />
+        <p class="fw-bold">Your Shipping address</p>
+        <p style="color:#777;" class="mb-0">{{ request.user.get_full_name }}</p>
+        <p style="color:#777;" class="mb-0">{{ request.user.customer.address }}</p>
+        <p style="color:#777;" class="mb-0">{{ request.user.customer.country }}</p>
+        <p style="color:#777;" class="mb-0">{{ request.user.customer.state }}</p>
+        <p style="color:#777;" class="mb-0">{{ request.user.customer.postal_code }}, {{ request.user.customer.city}}</p>
+        <p style="color:#777;" class="mb-0">{{ request.user.customer.phone_number }}</p>
+      </div>
+      {% else %}
+      {% endif %}
+    </div>
+  </div>
+  <div style="background:#fff;" class="mx-2 my-4 p-4">
+    <p class="fs-5 fw-bold">Security</p>
+    <p><a href="{% url 'password_change' %}">Change Password</a></p>
+    <p class="py-2 ps-1"style="background:#fbd2d2;"><a style="color:red;" href="{% url 'deleteuser' %}">Delete Account</a></p>
+  </div>
+  <div class="mb-4 fw-bold fs-5 text-center">
+    <a style="color:#ff933b;" href="{% url 'Logout' %}">Logout</a>
+  </div>
+{% endblock %}

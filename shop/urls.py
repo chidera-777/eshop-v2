@@ -23,9 +23,8 @@ urlpatterns = [
     path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')), 
     path('admin/', admin.site.urls),
     path('cart/', include('cart.urls', namespace='cart')),
-    path('orders/', include('orders.urls', namespace='orders')),
     path('accounts/', include('account.urls')),
-    path('payment/', include('payment.urls', namespace='payment')),
+    path('coupon/', include('coupon.urls', namespace='coupon')),
     path('', include('app.urls', namespace='app')),
 ]
 

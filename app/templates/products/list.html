@@ -18,7 +18,7 @@
   </div>
 </div>
 {% if not category %}
-<div class="main">
+<div class="main mb-3">
   <h1 class="py-3 ms-3">Top Categories</h1>
     {% for p in categories %}
     <div style="background:#fff; height:auto;" class="item float-start mx-2 mb-3">
@@ -30,8 +30,31 @@
   {% endfor %}
 </div>
 {% endif %}
-<div class="main">
-  <h1 style="background:#f7e4e8;" class="w-100 py-3 text-center">{% if category %}{{ category.name }}{% else %} Available Products{% endif %}</h1>
+{% if product_deal %}
+<div class="main mb-3">
+  <h2 style="background:rgb(224,65,65);" class="offers w-100 pt-3 pb-2 text-white mb-4"><div style="width:70px; height:70px;" class="d-inline-block ms-3"><img class="w-100" src="{% static 'img/special.png' %}" alt="" /></div>   {% if category %}{{ category.name }} offers{% else %}Special Offers{%endif%} </h2>
+  {% for p in product_deal %}
+    <div style="background:#fff; height:auto;" class="item float-start mx-2 mb-3">
+      <a href="{{ p.get_absolute_url }}">
+        <img class="d-block mw-100 h-auto mx-0 mt-0 mb-1" src="{% if p.image %}{{ p.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" alt="image" />
+      </a>
+      <a style="text-overflow:ellipsis; overflow:hidden; white-space:nowrap; font-size:14px; "class="d-block mt-4 px-2 pt-2 pb-1 fw-bold mb-4" href="{{ p.get_absolute_url }}">{{ p.name }}</a>
+      <p class="px-2 mb-0" style="font-size:18px;">${{ p.price }}</p>
+      <p class="px-2 mb-1" style="font-size:12px; text-decoration: line-through;">${{ p.old_price }}</p>
+      <div style="margin-top:-10px; " class="ps-2 mb-3">
+        <img style=" width:15px; height:15px;" src="{% static 'img/star.png' %}" alt="" />
+        <img style=" width:15px; height:15px;" src="{% static 'img/star.png' %}" alt="" />
+        <img style=" width:15px; height:15px;" src="{% static 'img/star.png' %}" alt="" />
+        <img style=" width:15px; height:15px;" src="{% static 'img/star.png' %}" alt="" />
+        <img style=" width:15px; height:15px;" src="{% static 'img/star.png' %}" alt="" />
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% else %}
+{% endif %}
+<div class="main mb-3">
+  <h1 style="background:#f7e4e8;" class="w-100 py-3 text-center mb-4">{% if category %}{{ category.name }}{% else %} Available Products{% endif %}</h1>
   {% for p in products %}
     <div style="background:#fff; height:auto;" class="item float-start mx-2 mb-3">
       <a href="{{ p.get_absolute_url }}">
@@ -48,5 +71,8 @@
       </div>
     </div>
   {% endfor %}
+</div>
+<div class="position-fixed" style="bottom:10%; right:10%;">
+   <a href="#">{% bs_icon 'arrow-up-square-fill' size='3.5rem' %}</a>
 </div>
 {% endblock %}

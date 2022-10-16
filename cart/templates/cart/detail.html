@@ -5,49 +5,106 @@
 {% if cart %}
   <div class="total_sm mt-1">
     <p style="color:#666; font-size:14px; height:10px;" class="px-2">SUMMARY</p>
+    {% if cart.coupon %}
+    <table class="bg-white w-100" border="0">
+      <tr>
+        <td class="px-2">Subtotal</td>
+        <td colspan="4"></td>
+        <td>${{ cart.get_total_price }}</td>
+      </tr>
+      <tr>
+        <td class="px-2">"{{ cart.coupon.code }}" coupon({{ cart.coupon.discount }}% off)</td>
+        <td colspan="4"></td>
+        <td class="text-danger">-${{ cart.get_discount|floatformat:2 }}</td>
+      </tr>
+      <tr>
+        <td class="fw-bold fs-5 px-2">Total Price</td>
+        <td colspan="4"></td>
+        <td class="fw-bold fs-5 px-2">${{ cart.get_total_price_after_discount|floatformat:2 }}</td>
+      </tr>
+    </table>
+    {% else %}
     <div style="background:white; font-size:20px;" class="px-3 py-2 fw-bold">
       Total Price <span class="float-end">${{ cart.get_total_price }}</span>
     </div>
+    {% endif %}
   </div>
   <div class="cart_list">
-    <p style="color:#666; font-size:14px; height:10px;" class="px-2 pt-2 pb-3">CART({{ cart|length }})</p>
-    
+    <p style="color:#666; font-size:14px; height:15px;" class="px-2 pt-2 pb-3">CART({{ cart|length }})</p>
     {% for item in cart %}
       {% with product=item.product %}
-      <div class="ms-2 pe-3 pb-2 pt-2" style="margin-bottom:20px; background: white; border-radius:9px;">
-      <a class="" href="{{ product.get_absolute_url }}">
-        <img class="cart_img float-start me-3 ms-2 my-2" src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" alt="image" />
-      </a>
-      <a href="{{ product.get_absolute_url }}">
-        <span style="font-size:14px; text-align:justify;" class=" mt-3 pb-2">{{ product.name }}</span>
-      </a>
-      <p style="font-size:20px;"class="d-block float-md-end fw-bold pb-2 py-2 ">${{ item.price }}</p>
-        <div style="align-items:start"><form action="{% url 'cart:cart_remove' product.id %}" method="POST">
-          {% csrf_token %}
-          <button style="background:#fff; color:#ff933b;width:100%; font-size:16px;" class=" border-0 text-start fw-bold px-2 mb-2 mt-4 pb-2 "> <span>{% bs_icon 'trash' size="1em" %}</span>REMOVE</button>
-          </form></div>
-          <form action="{% url 'cart:cart_add' product.id %}" method="POST" style="margin-top:-80px;" class="pt-1 float-end me-2">
-               {% csrf_token %}
-               {{ item.update_quantity_form.quantity }}
-               {{ item.update_quantity_form.override }}
-               <a href="#" class=" text-decoration-none"><button style="background:#ff933b; font-size:10px; border-radius:7px;" class=" border-0 text-center py-1 px-1 text-white" type="submit">update</button></a>
-             </form>
+      <div class="mx-1 p-1 p-md-2 mb-4" style="background:#fff; border-radius:9px;">
+        <div class="row">
+          <div class="col-4">  
+              <a href="{{ product.get_absolute_url }}">
+                <img class="cart_img me-3 ms-2 my-2" src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" alt="image" />
+              </a>
+          </div>
+          <div class="col-7 ms-2">
+              <a href="{{ product.get_absolute_url }}">
+                <span style="font-size:14px;" class="d-inline-block pt-3">{{ product.name }}</span>
+              </a>
+              <p style="font-size:20px;"class="d-block text-md-end fw-bold pb-1 py-2 ">${{ item.price }}</p>
+              <form action="{% url 'cart:cart_add' product.id %}" method="POST" class="pt-1 text-end pb-1 pt-2 px-1">
+                 {% csrf_token %}
+                  {{ item.update_quantity_form.quantity }}
+                 {{ item.update_quantity_form.override }}
+                <button style="background:#ff933b; font-size:10px; border-radius:7px;" class=" border-0 text-center py-1 px-1 text-white" type="submit">update</button>
+               </form>
+           </div>
+               <div style="align-items:start;"><form action="{% url 'cart:cart_remove' product.id %}" method="POST">
+                {% csrf_token %}
+                  <button style="background:#fff; color:#ff933b; font-size:16px;" class=" border-0 text-start fw-bold px-2 mb-2 mt-2 pb-2 "> <span>{% bs_icon 'trash' size="1em" %}</span>REMOVE</button>
+                 </form></div>
+          </div>
         </div>
       {% endwith %}
     {% endfor %}
-  </div>
-  <div class="d-md-none checkout">
-    <a class="text-decoration-none"href="{% url 'orders:order_payout' %}"><button style="background:#ff933b; font-size:17px; color:#fff; border-radius:7px;" class="w-100 border-0 py-2 px-3 fw-bold my-2" type="submit">CHECKOUT (${{ cart.get_total_price }})</button></a>
+ </div>
+  <div class="d-md-none ">
+    <div><form action="{% url 'coupon:coupon_apply' %}"  class="couponForm ms-1 py-4 px-2"  method="POST">
+      {% csrf_token %}
+      {{ coupon_form }}
+      <button style="background:#ff933b" class="text-white border-0 p-1 w-25" type="submit">Apply</button>
+    </form></div>
+    <a class="text-decoration-none"href="{% url 'order_payout' %}"><button style="background:#ff933b; font-size:17px; color:#fff; border-radius:7px;" class="w-100 border-0 py-2 px-3 fw-bold my-4" type="submit">CHECKOUT {% if cart.coupon %}(${{ cart.get_total_price_after_discount|floatformat:2 }}){% else %}(${{ cart.get_total_price|floatformat:2 }}){% endif %}</button></a>
   </div>
   <div class="total mt-1">
     <p style="background:#fff; color:#333; font-size:14px;" class="ps-2 py-2 mb-1">CART SUMMARY</p>
-    <div style="background:white; font-size:20px;" class="px-3 py-2 fw-bold">
-      Total Price <span class="float-end">${{ cart.get_total_price }}</span>
-      <a class="text-decoration-none" href="{% url 'orders:order_payout' %}"><button style="background:#ff933b; font-size:17px; color:#fff; border-radius:7px;" class="w-100 border-0 py-2 px-3 fw-bold mt-5 mb-3" type="submit">CHECKOUT (${{ cart.get_total_price }})</button></a>
+    <div style="background:white;">
+    {% if cart.coupon %}
+    <table class="w-100" border="0">
+      <tr>
+        <td class="px-2">Subtotal</td>
+        <td colspan="4"></td>
+        <td>${{ cart.get_total_price }}</td>
+      </tr>
+      <tr>
+        <td class="px-2">"{{ cart.coupon.code }}" coupon({{ cart.coupon.discount }}% off)</td>
+        <td colspan="4"></td>
+        <td class="text-danger">-${{ cart.get_discount|floatformat:2 }}</td>
+      </tr>
+      <tr>
+        <td class="fw-bold fs-5 px-2">Total Price</td>
+        <td colspan="4"></td>
+        <td class="fw-bold fs-5 px-2">${{ cart.get_total_price_after_discount|floatformat:2 }}</td>
+      </tr>
+    </table>
+    {% else %}
+      <div style="font-size:20px;" class="px-3 py-2 fw-bold">Total Price<span class="float-end">${{ cart.get_total_price|floatformat:2 }}</span></div>
+    {% endif %}
+       <form action="{% url 'coupon:coupon_apply' %}" class="couponForm my-4 ms-1" method="POST">
+          {% csrf_token %}
+            {{ coupon_form }}
+          <button style="background:#ff933b" class="text-white border-0 p-1 w-25" type="submit">Apply</button>
+        </form>
+      <div class="mx-3">
+        <a class="text-decoration-none" href="{% url 'order_payout' %}"><button style="background:#ff933b; font-size:17px; color:#fff; border-radius:7px;" class="w-100 border-0 py-2 px-3 fw-bold mt-5 mb-3" type="submit">CHECKOUT {% if cart.coupon %}(${{ cart.get_total_price_after_discount |floatformat:2 }}){% else %}(${{ cart.get_total_price|floatformat:2 }}){% endif %}</button></a>
+      </div>
     </div>
   </div>
   {% else %}
-  <img class="cart_img mb-2 mx-auto d-block" src="{% static 'img/empty_cart.png' %}" alt="" />
+  <img class="empty_img mb-2 mx-auto d-block" src="{% static 'img/empty_cart.png' %}" alt="" />
   <p style="font-size:18px;" class="fw-bold text-center">Your cart is empty!</p>
     <p class=" text-center">Click button below to start shopping</p>
     <div class="text-center"><a class="text-decoration-none" href="{% url 'app:product_list' %}">

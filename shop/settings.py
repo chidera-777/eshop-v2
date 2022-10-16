@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 import dj_database_url
 from pathlib import Path
+from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
 import environ
 
@@ -51,10 +52,9 @@ INSTALLED_APPS = [
     'app.apps.AppConfig',
       ## Other apps ##
     'cart.apps.CartConfig',
-    'orders.apps.OrdersConfig',
     'account.apps.AccountConfig',
     'users.apps.UsersConfig',
-    'payment.apps.PaymentConfig',
+    'coupon.apps.CouponConfig',
       ## Other libraries ##
     'django_bootstrap_icons',
     'crispy_forms',
@@ -108,6 +108,7 @@ AUTH_USER_MODEL = 'users.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -141,21 +142,23 @@ WSGI_APPLICATION = 'shop.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASE_URL = os.getenv('DATABASE_URL')
+#DATABASE_URL = os.getenv('DATABASE_URL')
 
 DATABASES = {
+    #'default': {
+       # 'ENGINE': 'django.db.backends.sqlite3',
+    #    'NAME': BASE_DIR / 'db.sqlite3',
+  #  }
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env('NAME'),
+        'USER': env('USER'),
+        'PASSWORD': env('PASSWORD'),
+        'HOST': env('HOST'),
+        'PORT': env('PORT'),
+      }
 }
-       # 'ENGINE': 'django.db.backends.mysql',
-       # 'NAME': 'railway',
-       # 'USER': env('USER'), # "root", 
-    #    'PASSWORD': env('PASSWORD'), #'PGzV4FI5wGM9kfmp2ADE',  
-  #      'HOST': env('HOST'),
-       # 'PORT': '7523'
-   # }
+
 
 
 # Password validation
@@ -192,15 +195,18 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'static'
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media/'
 
 CART_SESSION_ID = 'cart'
+SAVED_ITEMS_SESSION_ID= 'saved_items'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -215,11 +221,20 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 # Braintree settings
-BRAINTREE_MERCHANT_ID = env('MERCHANT_ID')
-BRAINTREE_PUBLIC_KEY = env('PUBLIC_KEY')
-BRAINTREE_PRIVATE_KEY = env('PRIVATE_KEY')
+#BRAINTREE_MERCHANT_ID = env('MERCHANT_ID')
+#BRAINTREE_PUBLIC_KEY = env('PUBLIC_KEY')
+#BRAINTREE_PRIVATE_KEY = env('PRIVATE_KEY')
 
-import braintree
+#import braintree
 
 # Change to Environment.Production when in production with a new id and keys
-BRAINTREE_CONF = braintree.Configuration(braintree.Environment.Sandbox, BRAINTREE_MERCHANT_ID, BRAINTREE_PUBLIC_KEY, BRAINTREE_PRIVATE_KEY)
+#BRAINTREE_CONF = braintree.Configuration(braintree.Environment.Sandbox, BRAINTREE_MERCHANT_ID, BRAINTREE_PUBLIC_KEY, BRAINTREE_PRIVATE_KEY)
+
+# Celery settings
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"
+
+# Redis settings
+REDIS_HOST = 'localhost' 
+REDIS_PORT = '6379'
+REDIS_DB = 1

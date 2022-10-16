@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}
+  Logout
+{% endblock %}
+{% block content %}
+  <div style="background:white;margin-top:25px; margin-bottom:60px" class="form p-3">
+      <h4 class="text-center">Are you sure you want to Leave ??</h4>
+      <p class="text-center">Note that all items in cart and saved items will be deleted.</p>
+      <div class="my-5">
+        <div class="d-inline-block"><button class="fw-bold border-0 px-2 py-1" style="background:#000;"><a style="color:#fff;" href="{% url 'app:product_list' %}">CANCEL</a></button></div>
+        <div class="float-end d-inline-block"><button style="background:#ff933b;color:#fff;" class="px-3 py-1 fw-bold border-0"><a style="color:#fff;" href="{% url 'logout' %}">YES</a></button></div>
+      </div>
+  </div>
+{% endblock %}
