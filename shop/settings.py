@@ -239,4 +239,5 @@ REDIS_HOST = 'localhost'
 REDIS_PORT = '6379'
 REDIS_DB = 1
 
-
+import django_heroku
+django_heroku.settings(locals())
