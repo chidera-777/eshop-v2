@@ -132,10 +132,11 @@ def logout_view(request):
 @login_required(login_url='login') 
 def user_profile(request):
     try:
-      customer_user = Customer.objects.get(user=request.user)
-    except:
-      pass
-    return render(request, 'user.html')
+      Customer.objects.get(user=request.user)
+      return render(request, 'user.html')
+    except Customer.DoesNotExist:
+      return redirect('order_register')
+    
     
 @login_required(login_url='login')
 def user_edit(request):

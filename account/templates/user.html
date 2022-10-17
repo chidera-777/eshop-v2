@@ -15,7 +15,6 @@
       </div>
     </div>
     <div class="col-md-6">
-      {% if customer_user %}
       <div style="background:#fff;" class="px-4 py-4 mx-3 my-2">
         <h4 class="my-3 mb-0">Address book</h4><span class="text-end d-block"><a href="{% url 'user_edit_address' %}" style="color:#ff933b">{% bs_icon 'pencil-fill' %}</a></span>
         <hr />
@@ -27,8 +26,6 @@
         <p style="color:#777;" class="mb-0">{{ request.user.customer.postal_code }}, {{ request.user.customer.city}}</p>
         <p style="color:#777;" class="mb-0">{{ request.user.customer.phone_number }}</p>
       </div>
-      {% else %}
-      {% endif %}
     </div>
   </div>
   <div style="background:#fff;" class="mx-2 my-4 p-4">

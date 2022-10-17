@@ -32,7 +32,7 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = os.environ['SECRET_KEY'] #env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -145,17 +145,17 @@ WSGI_APPLICATION = 'shop.wsgi.application'
 #DATABASE_URL = os.getenv('DATABASE_URL')
 
 DATABASES = {
-    #'default': {
+ #   'default': {
        # 'ENGINE': 'django.db.backends.sqlite3',
-    #    'NAME': BASE_DIR / 'db.sqlite3',
+   #     'NAME': BASE_DIR / 'db.sqlite3',
   #  }
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ['NAME'] #env('NAME'),
-        'USER': os.environ['USER'] #env('USER'),
-        'PASSWORD': os.environ['PASSWORD'] #env('PASSWORD'),
-        'HOST': os.environ['HOST'] #env('HOST'),
-        'PORT': os.environ['PORT'] #env('PORT'),
+        'NAME': os.environ['NAME'], #env('NAME'),
+        'USER': os.environ['USER'], #env('USER'),
+        'PASSWORD': os.environ['PASSWORD'], #env('PASSWORD'),
+        'HOST': os.environ['HOST'], #env('HOST'),
+        'PORT': os.environ['PORT'], #env('PORT'),
       }
 }
 
@@ -239,5 +239,4 @@ REDIS_HOST = 'localhost'
 REDIS_PORT = '6379'
 REDIS_DB = 1
 
-import django_heroku
-django_heroku.settings(locals())
+
