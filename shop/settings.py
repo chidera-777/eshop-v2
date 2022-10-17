@@ -29,12 +29,12 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = os.environ['SECRET_KEY'] #env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -151,11 +151,11 @@ DATABASES = {
   #  }
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env('NAME'),
-        'USER': env('USER'),
-        'PASSWORD': env('PASSWORD'),
-        'HOST': env('HOST'),
-        'PORT': env('PORT'),
+        'NAME': os.environ['NAME'] #env('NAME'),
+        'USER': os.environ['USER'] #env('USER'),
+        'PASSWORD': os.environ['PASSWORD'] #env('PASSWORD'),
+        'HOST': os.environ['HOST'] #env('HOST'),
+        'PORT': os.environ['PORT'] #env('PORT'),
       }
 }
 
@@ -214,9 +214,9 @@ SAVED_ITEMS_SESSION_ID= 'saved_items'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = env('EMAIL_HOST')
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASS')
+EMAIL_HOST = os.environ['EMAIL_HOST'] #env('EMAIL_HOST')
+EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER'] #env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASS'] #env('EMAIL_HOST_PASS')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
