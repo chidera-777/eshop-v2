@@ -151,11 +151,11 @@ DATABASES = {
   #  }
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ['NAME'] #env('NAME'),
-        'USER': os.environ['USER'] #env('USER'),
-        'PASSWORD': os.environ['PASSWORD'] #env('PASSWORD'),
-        'HOST': os.environ['HOST'] #env('HOST'),
-        'PORT': os.environ['PORT'] #env('PORT'),
+        'NAME': os.environ['NAME'], #env('NAME'),
+        'USER': os.environ['USER'], #env('USER'),
+        'PASSWORD': os.environ['PASSWORD'], #env('PASSWORD'),
+        'HOST': os.environ['HOST'], #env('HOST'),
+        'PORT': os.environ['PORT'], #env('PORT'),
       }
 }
 
