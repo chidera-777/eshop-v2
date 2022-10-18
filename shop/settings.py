@@ -29,7 +29,7 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['SECRET_KEY'] #env('SECRET_KEY')
+SECRET_KEY = os.environ['SECRET_KEY'] #env('SECRET_KEY') 
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -145,17 +145,17 @@ WSGI_APPLICATION = 'shop.wsgi.application'
 #DATABASE_URL = os.getenv('DATABASE_URL')
 
 DATABASES = {
- #   'default': {
-       # 'ENGINE': 'django.db.backends.sqlite3',
-   #     'NAME': BASE_DIR / 'db.sqlite3',
-  #  }
+   # 'default': {
+    #    'ENGINE': 'django.db.backends.sqlite3',
+      #  'NAME': BASE_DIR / 'db.sqlite3',
+   # }
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.environ['NAME'], #env('NAME'),
         'USER': os.environ['USER'], #env('USER'),
-        'PASSWORD': os.environ['PASSWORD'], #env('PASSWORD'),
-        'HOST': os.environ['HOST'], #env('HOST'),
-        'PORT': os.environ['PORT'], #env('PORT'),
+        'PASSWORD': os.environ['PASSWORD'],  #env('PASSWORD'), 
+        'HOST': os.environ['HOST'], #env('HOST'), 
+        'PORT': os.environ['PORT'], #env('PORT'), 
       }
 }
 
