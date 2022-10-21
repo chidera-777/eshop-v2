@@ -104,9 +104,9 @@ def password_reset_view(request):
                 subject = "Password Reset Request"
                 context = {
                   "email": users.email,
-                  "protocol": 'http',
-                  "domain": '127.0.0.1:8000',
-                  'site_name': 'Website',
+                  "protocol": 'https',
+                  "domain": 'eshop-ng.herokuapp.com',
+                  'site_name': 'Eshop',
 					        "uid": urlsafe_base64_encode(force_bytes(users.pk)),
 					        'token': default_token_generator.make_token(users),
                 }

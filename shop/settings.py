@@ -15,6 +15,9 @@ import dj_database_url
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 import environ
 
 env = environ.Env()
@@ -32,7 +35,7 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = os.environ['SECRET_KEY'] #env('SECRET_KEY') 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -48,6 +51,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary_storage',
+    'cloudinary',
       ## Main app ##
     'app.apps.AppConfig',
       ## Other apps ##
@@ -201,6 +206,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'static'
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media/'
 
@@ -220,16 +226,6 @@ EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASS'] #env('EMAIL_HOST_PASS')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-# Braintree settings
-#BRAINTREE_MERCHANT_ID = env('MERCHANT_ID')
-#BRAINTREE_PUBLIC_KEY = env('PUBLIC_KEY')
-#BRAINTREE_PRIVATE_KEY = env('PRIVATE_KEY')
-
-#import braintree
-
-# Change to Environment.Production when in production with a new id and keys
-#BRAINTREE_CONF = braintree.Configuration(braintree.Environment.Sandbox, BRAINTREE_MERCHANT_ID, BRAINTREE_PUBLIC_KEY, BRAINTREE_PRIVATE_KEY)
-
 # Celery settings
 CELERY_BROKER_URL = "redis://localhost:6379"
 CELERY_RESULT_BACKEND = "redis://localhost:6379"
@@ -238,6 +234,13 @@ CELERY_RESULT_BACKEND = "redis://localhost:6379"
 REDIS_HOST = 'localhost' 
 REDIS_PORT = '6379'
 REDIS_DB = 1
+
+cloudinary.config(
+  cloud_name = os.environ['CLOUD_NAME'],
+  api_key = os.environ['API_KEY'],
+  api_secret = os.environ['API_SECRET'],
+)
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 import django_heroku
 django_heroku.settings(locals())

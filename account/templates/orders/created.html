@@ -66,6 +66,9 @@
             <div class="mt-4 mb-3 text-center">
               <a style="background:#ff933b; color:white; border-radius:9px; width:100%;" class="fw-bold p-3 d-inline-block" href="{% url 'cart:cart_detail' %}">MODIFY CART</a>
             </div>
+            <div class="text-center mb-3">
+              <button type="button" style="border-radius:7px; font-size:20px;" class="bg-white border-0 w-100 p-3 fw-bold" id="start-payment-button" onclick="makePayment()">Pay with <span class="d-inline-block" style="width:170px;"><img class="w-100" src="{% static 'img/images-2.webp' %}" alt="" /></span></button>
+            </div>
             <div id="paypal-button-container"></div>
             <div class="text-center">
               <div class="d-inline-block" style="width:40px; height:40px;">
@@ -82,7 +85,45 @@
       </div>
   {% endif %}
   </div>
+  <script src="https://checkout.flutterwave.com/v3.js"></script>
   <script src="https://www.paypal.com/sdk/js?client-id=AcG3MZqqzajfdBMISdrJZA4_07RFscBUQLSvDfwJwh2uTC0c7FQgDT7c2BglHyq40fcdhxR5a-oMbMUA&currency=USD&disable-funding=credit"></script>
+  <script>
+    function makePayment() {
+      FlutterwaveCheckout({
+        public_key: "FLWPUBK_TEST-975f0d3310ff5161391b7106f13699c2-X",
+        tx_ref: "titanic-48981487343MDI0NzMx",
+        amount: {% if cart.coupon %}{{cart.get_total_price_after_discount}}{% else %}{{ cart.get_total_price }}{% endif %},
+        currency: "USD",
+        payment_options: "card, banktransfer, ussd",
+        redirect_url: "https://eshop-ng.herokuapp.com/accounts/confirm/",
+        callback: function(payment) {
+          // Send AJAX verification request to backend
+          verifyTransactionOnBackend(payment.id);
+        },
+        onclose: function(incomplete) {
+          if (incomplete || window.verified === false) {
+            alert('Please try again or contact support if you are having difficulties in making payments');
+          } else {
+            document.querySelector("form").style.display = 'none';
+            if (window.verified == true) {
+              alert('Transaction was Successful!!');
+            } else {
+              alert('Pending Payment.....\nYou will be notified soon.');
+            }
+          }
+        },
+        customer: {
+          email: "{{ request.user.email }}",
+          phone_number: "{{ request.user.customer.phone_number }}",
+          name: "{{ request.user.get_full_name }}",
+        },
+        customizations: {
+          title: "Eshop Online Store",
+          description: "Payment for an item",
+        },
+      });
+    }
+  </script>
   <script>
       paypal.Buttons({
         style: {
