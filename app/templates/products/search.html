@@ -16,7 +16,6 @@
     </div>
     <div class="mt-1 ms-md-5 col-md-7">
       <p style="color:#666; font-size:14px; height:10px;" class="px-2">RESULTS FROM SEARCH</p>
-      {% if search_post %}
       {% for p in search_query %}
       <div style="background:#fff; height:auto;" class="search_item mx-2 mb-3">
       <a href="{{ p.get_absolute_url }}">
@@ -33,11 +32,6 @@
       </div>
     </div>
       {% endfor %}
-      {% else %}
-      <div class="fs-5">
-        Sorry!! We could not find any related item 
-      </div>
-      {% endif %}
     </div>
   </div>
 {% endblock %}

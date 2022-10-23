@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cloudinary_storage',
     'cloudinary',
+    'django.contrib.postgres',
       ## Main app ##
     'app.apps.AppConfig',
       ## Other apps ##

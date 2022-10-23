@@ -6,6 +6,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.conf import settings
 from django.http import HttpResponse
+from django.contrib.postgres.search import SearchVector, SearchQuery
 from .models import Category, Product, Newsletter
 from cart.forms import CartAddProductForm
 from .forms import NewsletterForm
@@ -34,7 +35,10 @@ def product_details(request, id, slug):
 def search_list(request):
     search_post = request.GET['q']
     categories = Category.objects.all()
-    search_query = Product.objects.filter(Q(category__name__icontains=search_post) | Q(name__icontains=search_post))
+    if search_post:
+        search_query = Product.objects.annotate(search=SearchVector('category__name', 'name')).filter(search=SearchQuery(search_post))
+    else:
+        messages.error(request, 'Sorry, We could not find any related item')
     return render(request, 'products/search.html', {'search_post':search_post, 'categories': categories, 'search_query': search_query})
     
 def sm_search(request):
