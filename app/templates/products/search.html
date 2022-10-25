@@ -30,8 +30,10 @@
         <img style=" width:15px; height:15px;" src="{% static 'img/star.png' %}" alt="" />
         <img style=" width:15px; height:15px;" src="{% static 'img/star.png' %}" alt="" />
       </div>
-    </div>
-      {% endfor %}
+      </div>
+      {% empty %}
+      <p class="text-center fw-bold fs-5">No result from search</p>
+    {% endfor %}
     </div>
   </div>
 {% endblock %}
