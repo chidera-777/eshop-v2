@@ -13,7 +13,7 @@
           <p class="mb-1" style="color:#888; font-size:14px;">{{ request.user.customer.state }} - {{request.user.customer.city}}</p>
           <p class="mb-1" style="color:#888; font-size:14px;">{{request.user.customer.phone_number}}</p>
         </div>
-        <p class="text-end"><a style="color:#ff933b" href="{% url 'order_register' %}">Change Address</a></p>
+        <p class="text-end"><a style="color:#ff933b" href="{% url 'user_edit_address' %}">Change Address</a></p>
       </div>
     </div>
    {% if cart %}
