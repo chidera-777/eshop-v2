@@ -243,5 +243,3 @@ cloudinary.config(
 )
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-import django_heroku
-django_heroku.settings(locals())
