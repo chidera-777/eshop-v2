@@ -21,7 +21,6 @@ from weasyprint import HTML, CSS
 from cart.cart import Cart
 from .models import Customer,CustomerOrder
 from .forms import CustomUserCreationForm, CustomerOrderForm, ConfirmPaymentForm, CustomUserChangeForm, DeleteUserForm
-from .tasks import payment_completed
 
 # Create your views here.
 def register(request):
