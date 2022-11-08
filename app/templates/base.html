@@ -258,7 +258,7 @@
             <p class="fw-bold fs-5">Subscribe to our Newsletter</p>
             <form class="" action="{% url 'app:newsletter' %}" method="POST">
               {% csrf_token %}
-              <span><input style="padding:10px;" type="text" class=" form-control d-inline w-50" id="email" placeholder="Enter email" name="email" required>
+              <span><input style="padding:10px;" type="email" class=" form-control d-inline w-50" id="email" placeholder="Enter email" name="email" required>
               <button style="background:#ff933b; color:white;" class="p-2 border-0" type="submit">Subscribe</button></span>
             </form>
           </div>
