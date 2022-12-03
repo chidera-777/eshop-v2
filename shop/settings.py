@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 import os
-import dj_database_url
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
 import cloudinary
@@ -146,20 +145,26 @@ WSGI_APPLICATION = 'shop.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-#DATABASE_URL = os.getenv('DATABASE_URL')
-
 DATABASES = {
    # 'default': {
     #    'ENGINE': 'django.db.backends.sqlite3',
       #  'NAME': BASE_DIR / 'db.sqlite3',
    # }
+   # 'default': {
+      #  'ENGINE': 'django.db.backends.postgresql_psycopg2',
+       # 'NAME': os.environ['NAME'], #env('NAME'),
+       # 'USER': os.environ['USER'], #env('USER'),
+       # 'PASSWORD': os.environ['PASSWORD'],  #env('PASSWORD'), 
+      #  'HOST': os.environ['HOST'], #env('HOST'), 
+       # 'PORT': os.environ['PORT'], #env('PORT'), 
+     # }
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ['NAME'], #env('NAME'),
-        'USER': os.environ['USER'], #env('USER'),
-        'PASSWORD': os.environ['PASSWORD'],  #env('PASSWORD'), 
-        'HOST': os.environ['HOST'], #env('HOST'), 
-        'PORT': os.environ['PORT'], #env('PORT'), 
+        'NAME': env('PGDATABASE'), #os.environ['PGDATABASE'],
+        'USER': env('PGUSER'), #os.environ['PGUSER'],
+        'PASSWORD': env('PGPASSWORD'), #os.environ['PGPASSWORD'],
+        'HOST': env('PGHOST'), #os.environ['PGHOST'],
+        'PORT': env('PGPORT'), #os.environ['PGPORT'],
       }
 }
 
