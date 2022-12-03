@@ -150,21 +150,13 @@ DATABASES = {
     #    'ENGINE': 'django.db.backends.sqlite3',
       #  'NAME': BASE_DIR / 'db.sqlite3',
    # }
-   # 'default': {
-      #  'ENGINE': 'django.db.backends.postgresql_psycopg2',
-       # 'NAME': os.environ['NAME'], #env('NAME'),
-       # 'USER': os.environ['USER'], #env('USER'),
-       # 'PASSWORD': os.environ['PASSWORD'],  #env('PASSWORD'), 
-      #  'HOST': os.environ['HOST'], #env('HOST'), 
-       # 'PORT': os.environ['PORT'], #env('PORT'), 
-     # }
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env('PGDATABASE'), #os.environ['PGDATABASE'],
-        'USER': env('PGUSER'), #os.environ['PGUSER'],
-        'PASSWORD': env('PGPASSWORD'), #os.environ['PGPASSWORD'],
-        'HOST': env('PGHOST'), #os.environ['PGHOST'],
-        'PORT': env('PGPORT'), #os.environ['PGPORT'],
+        'NAME': os.environ['PGDATABASE'],
+        'USER': os.environ['PGUSER'],
+        'PASSWORD': os.environ['PGPASSWORD'],
+        'HOST': os.environ['PGHOST'],
+        'PORT': os.environ['PGPORT'],
       }
 }
 
