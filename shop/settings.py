@@ -150,14 +150,15 @@ DATABASES = {
     #    'ENGINE': 'django.db.backends.sqlite3',
       #  'NAME': BASE_DIR / 'db.sqlite3',
    # }
-    'default': {
+     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ['PGDATABASE'],
-        'USER': os.environ['PGUSER'],
-        'PASSWORD': os.environ['PGPASSWORD'],
-        'HOST': os.environ['PGHOST'],
-        'PORT': os.environ['PGPORT'],
+        'NAME': env('NAME'),
+        'USER': env('USER'),
+        'PASSWORD': env('PASSWORD'),
+        'HOST': env('HOST'),
+        'PORT': env('PORT'),
       }
+
 }
 
 
@@ -221,15 +222,6 @@ EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER'] #env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASS'] #env('EMAIL_HOST_PASS')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-
-# Celery settings
-CELERY_BROKER_URL = "redis://localhost:6379"
-CELERY_RESULT_BACKEND = "redis://localhost:6379"
-
-# Redis settings
-REDIS_HOST = 'localhost' 
-REDIS_PORT = '6379'
-REDIS_DB = 1
 
 cloudinary.config(
   cloud_name = os.environ['CLOUD_NAME'],
