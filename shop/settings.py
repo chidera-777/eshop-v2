@@ -152,12 +152,13 @@ DATABASES = {
    # }
      'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env('NAME'),
-        'USER': env('USER'),
-        'PASSWORD': env('PASSWORD'),
-        'HOST': env('HOST'),
-        'PORT': env('PORT'),
+        'NAME': os.environ['NAME'],
+        'USER': os.environ['USER'],
+        'PASSWORD': os.environ['PASSWORD'],
+        'HOST': os.environ['HOST'],
+        'PORT': os.environ['PORT'],
       }
+      
 
 }
 
@@ -217,9 +218,9 @@ SAVED_ITEMS_SESSION_ID= 'saved_items'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.environ['EMAIL_HOST'] #env('EMAIL_HOST')
-EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER'] #env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASS'] #env('EMAIL_HOST_PASS')
+EMAIL_HOST = os.environ['EMAIL_HOST']
+EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASS']
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
